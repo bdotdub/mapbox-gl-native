@@ -50,17 +50,6 @@ NS_ASSUME_NONNULL_END
 {
     return self.mapView.userTrackingMode != MGLUserTrackingModeNone;
 }
-
-- (void)setHeading:(CLHeading *)newHeading
-{
-    if (newHeading.trueHeading != _heading.trueHeading)
-    {
-        [self willChangeValueForKey:@"heading"];
-        _heading = newHeading;
-        [self didChangeValueForKey:@"heading"];
-    }
-}
-
 - (CLLocationCoordinate2D)coordinate
 {
     return self.location.coordinate;

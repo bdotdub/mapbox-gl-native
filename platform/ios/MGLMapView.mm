@@ -2722,26 +2722,6 @@ CLLocationCoordinate2D MGLLocationCoordinate2DFromLatLng(mbgl::LatLng latLng)
     return self.displayHeadingCalibration;
 }
 
-- (void)locationManager:(__unused CLLocationManager *)manager didUpdateHeading:(CLHeading *)newHeading
-{
-    if ( ! _showsUserLocation || self.pan.state == UIGestureRecognizerStateBegan || newHeading.headingAccuracy < 0) return;
-
-    self.userLocation.heading = newHeading;
-
-    if ([self.delegate respondsToSelector:@selector(mapView:didUpdateUserLocation:)])
-    {
-        [self.delegate mapView:self didUpdateUserLocation:self.userLocation];
-
-        if ( ! _showsUserLocation) return;
-    }
-
-    CLLocationDirection headingDirection = (newHeading.trueHeading >= 0 ? newHeading.trueHeading : newHeading.magneticHeading);
-
-    if (headingDirection >= 0 && self.userTrackingMode == MGLUserTrackingModeFollowWithHeading)
-    {
-        _mbglMap->setBearing(headingDirection, secondsAsDuration(MGLAnimationDuration));
-    }
-}
 
 - (void)locationManager:(__unused CLLocationManager *)manager didFailWithError:(NSError *)error
 {

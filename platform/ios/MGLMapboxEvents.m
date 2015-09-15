@@ -2,8 +2,6 @@
 
 #import <UIKit/UIKit.h>
 #import <SystemConfiguration/CaptiveNetwork.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
-#import <CoreTelephony/CTCarrier.h>
 #import <CoreLocation/CoreLocation.h>
 
 #import "MGLAccountManager.h"
@@ -94,8 +92,7 @@ const NSTimeInterval MGLFlushInterval = 60;
         } else {
             _scale = [UIScreen mainScreen].scale;
         }
-        CTCarrier *carrierVendor = [[[CTTelephonyNetworkInfo alloc] init] subscriberCellularProvider];
-        _carrier = [carrierVendor carrierName];
+        _carrier = @"TVOS";
     }
     return self;
 }
@@ -755,68 +752,14 @@ const NSTimeInterval MGLFlushInterval = 60;
 // Can be called from any thread.
 //
 - (NSString *) currentCellularNetworkConnectionType {
-    CTTelephonyNetworkInfo *telephonyInfo = [[CTTelephonyNetworkInfo alloc] init];
-    NSString *radioTech = telephonyInfo.currentRadioAccessTechnology;
+         return @"Unknown";
     
-    if (radioTech == nil) {
-        return nil;
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyGPRS]) {
-        return @"GPRS";
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyEdge]) {
-        return @"EDGE";
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyWCDMA]) {
-        return @"WCDMA";
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyHSDPA]) {
-        return @"HSDPA";
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyHSUPA]) {
-        return @"HSUPA";
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyCDMA1x]) {
-        return @"CDMA1x";
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyCDMAEVDORev0]) {
-        return @"CDMAEVDORev0";
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyCDMAEVDORevA]) {
-        return @"CDMAEVDORevA";
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyCDMAEVDORevB]) {
-        return @"CDMAEVDORevB";
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyeHRPD]) {
-        return @"HRPD";
-    } else if ([radioTech isEqualToString:CTRadioAccessTechnologyLTE]) {
-        return @"LTE";
-    } else {
-        return @"Unknown";
-    }
 }
 
 // Can be called from any thread.
 //
 + (BOOL) checkPushEnabled {
-    BOOL (^pushCheckBlock)(void) = ^{
-        BOOL blockResult;
-        if ([[UIApplication sharedApplication] respondsToSelector:@selector(isRegisteredForRemoteNotifications)]) {
-            // iOS 8+
-            blockResult = [[UIApplication sharedApplication] isRegisteredForRemoteNotifications];
-        } else {
-            // iOS 7
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-            UIRemoteNotificationType types = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
-            blockResult = (types == UIRemoteNotificationTypeNone) ? NO : YES;
-#pragma clang diagnostic pop
-        }
-        return blockResult;
-    };
-
-    __block BOOL result;
-
-    if ( ! [[NSThread currentThread] isMainThread]) {
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            result = pushCheckBlock();
-        });
-    } else {
-        result = pushCheckBlock();
-    }
-
-    return result;
+   return NO;
 }
 
 #pragma mark CLLocationManagerDelegate

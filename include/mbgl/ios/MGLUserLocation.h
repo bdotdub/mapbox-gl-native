@@ -15,11 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** A Boolean value indicating whether the user’s location is currently being updated. (read-only) */
 @property (nonatomic, readonly, getter=isUpdating) BOOL updating;
 
-/** The heading of the user location. (read-only)
-*
-* This property is `nil` if the user location tracking mode is not `MGLUserTrackingModeFollowWithHeading`. */
-@property (nonatomic, readonly, nullable) CLHeading *heading;
-
 /** @name Accessing the User Annotation Text */
 
 /** The title to display for the user location annotation. */
